@@ -1,0 +1,53 @@
+<template>
+    <div class="slds-box slds-theme_default">
+      <lightning-layout  multiple-rows>
+        <!-- Create Quote Button-->
+             <lightning-layout-item size="12" padding="around-small">
+                 <lightning-card title="">
+                     <lightning-button 
+                     variant="brand"  
+                     label="Create Quote"
+                     title="Create Quote"
+                     class="slds-m-right_x-small" 
+                     onclick={openModal} 
+                     slot="actions"
+                     >
+                 </lightning-button>
+                 </lightning-card>
+             </lightning-layout-item>       
+             <lightning-layout-item size="12" padding="around-small"> 
+                   <template if:true={isModalOpen}>
+                      <c-create-quote-form onhide={handleHide} oncreate={handleCreate} opportunity-id={recordId}> </c-create-quote-form>
+                   </template>
+                       <!-- Related products component contains Two buttons Add Product and Edit Product,  which makesit reponsible for hiding and displaying related Component -->
+                   <template if:true={showProducts}>
+                       <c-related-products quote-id={currentQuoteId} onhiderelatedproducts={handleHideRelatedProducts} onshoweditproducts={handleShowEditProducts} onshowaddproducts={handleShowAddProducts}  onshowaddpricebook={handleShowAddPriceBook} onshowselectpricebookentry={handleShowSelectPriceBookEntry}></c-related-products>
+                   </template>
+                   <template if:true={showEditProducts}>  
+                       <c-edit-products quote-id={currentQuoteId} onhideeditproducttable={handleHideEditProducts} onproductedited={handleEditProduct}></c-edit-products>
+                   </template>
+                   <template if:true={showAddPriceBook}>
+                        <c-select-price-book onhideselectpricebook={handleHideSelectPriceBook} onselectpricebook={handleSelectPriceBook} quote-id={currentQuoteId}></c-select-price-book>
+                   </template>  
+         
+                   <template if:true={ShowSelectPriceBookEntry}>
+                         <c-select-price-book-entry onhideselectpricebookentry={handleSelectPriceBookEntry} onsubmitedquotelineitems={handleSubmitedQuoteLineItems} opportunity-id={recordId} quote-id={currentQuoteId}></c-select-price-book-entry>
+                   </template>
+                   <template if:true={showAddQuoteLineItems}>
+                         <c-add-quote-line-items  quote-line-items={submitedQuoteLineItems} onhideaddquotelineitems={handleHideAddQuoteLineItems} onbacktopricebookentry={handleBackToPriceBookEntry} price-book-id={selectedPriceBook}  quote-id={currentQuoteId} oninsertquotelineitems={handleInsertQuoteLineItems} ></c-add-quote-line-items>
+                   </template> 
+                   <div class="slds-scrollable_none"  >  
+                    <lightning-datatable
+                            key-field="Id"
+                            data={records}
+                            columns={columns} 
+                            draft-values={saveDraftValues}
+                            onsave={handleSave}
+                            onrowaction={handleRowAction}
+                            hide-checkbox-column>
+                    </lightning-datatable>
+                </div>            
+           </lightning-layout-item>      
+    </lightning-layout>
+  </div>
+</template>

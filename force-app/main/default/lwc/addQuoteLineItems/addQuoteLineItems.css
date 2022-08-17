@@ -1,0 +1,7 @@
+.THIS .left-align {
+    position: fixed;
+    left: 20px;
+}
+.THIS .right-align {
+    text-align: right;
+}
